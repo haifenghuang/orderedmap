@@ -86,7 +86,7 @@ func main() {
 # API
 
 | 函数 | 说明|
-| ---------------- |
+| ---- | --- |
 | New()  | 创建一个新的OrderedMap. |
 | Get(key string)  | 根据提供的key，返回相应的value。 |
 | GetAt(pos int)   | 根据提供的pos，返回其对应位置的值。 |

@@ -87,7 +87,7 @@ func main() {
 # API
 
 | Function | Description |
-| ---------------- |
+| -------- | ----------- |
 | New()  | New create a new OrderedMap. |
 | Get(key string)  | Get returns the value of the map based on its key. |
 | GetAt(pos int)   | GetAt returns the value based on the provided pos. |
