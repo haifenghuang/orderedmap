@@ -57,6 +57,9 @@ func (om *OrderedMap) Set(key string, value interface{}) {
 }
 
 // SetAt sets the given key to the given value at the specified index.
+// 1. If (index == -1 || index >= len(orderedmap)), then put it at the end. 
+// 2. If index is negative, index < -len(orderedmap), then put it at the beginning.
+// 3  If index == -1, -2, ..., put it from the last, last - 1, etc...
 func (om *OrderedMap) SetAt(index int, key string, val interface{}) {
 	valLen := len(om.values)
 	if index == -1 || index >= valLen {
