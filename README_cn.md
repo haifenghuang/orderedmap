@@ -83,6 +83,27 @@ func main() {
 * OrderedMap仅支持字符串类型的键(key)。
 * OrderedMap对于并发访问不是线程安全的。(使用sync.RWMutex来增加并发访问应该比较简单)
 
+# API
+
+| 函数 | 说明|
+| ---------------- |
+| New()  | 创建一个新的OrderedMap. |
+| Get(key string)  | 根据提供的key，返回相应的value。 |
+| GetAt(pos int)   | 根据提供的pos，返回其对应位置的值。 |
+| Set(key string, value interface{}) | 设置map的key/value。 |
+| SetAt(index int, key string, val interface{}) | 在指定indx处设置相应的key/value。 |
+| Delete(key string) | 删除指定key对应的值。 |
+| DeleteAt(offset int) | 删除指定位置(offset)的key/value元素。 |
+| Keys()| 返回OrderedMap的所有键(key)。 |
+| Values() | 返回OrderedMap的所有值(value)。 |
+| Exists(key string) | 测试key是否存在于OrderedMap中。 |
+| Index(key string) | 返回key所对应的值(value)处的索引。 |
+| Len() | 返回OrderedMap的长度 |
+| String() | 返回JSON序列化后的字符串. |
+| MarshalJSON() ([]byte, error) | MarshalJSON 实现了`json.Marshaller`接口。 |
+| UnmarshalJSON(b []byte) error| UnmarshalJSON实现了`json.Unmarshaller`接口。 |
+
+
 # 其它可选项
 
 * [cevaris/ordered_map](https://github.com/cevaris/ordered_map)

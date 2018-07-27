@@ -147,6 +147,7 @@ func (om *OrderedMap) Index(key string) int {
 	return -1
 }
 
+// Len returns the length of the map.
 func (om *OrderedMap) Len() int {
 	return len(om.keys)
 }

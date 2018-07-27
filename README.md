@@ -84,6 +84,26 @@ func main() {
 * OrderedMap only takes strings for the key.
 * OrderedMap is not thread-saft for concurrent use.(It is simple enough to add one using sync.RWMutex)
 
+# API
+
+| Function | Description |
+| ---------------- |
+| New()  | New create a new OrderedMap. |
+| Get(key string)  | Get returns the value of the map based on its key. |
+| GetAt(pos int)   | GetAt returns the value based on the provided pos. |
+| Set(key string, value interface{}) | Set sets the key/value of the map based on key and value. |
+| SetAt(index int, key string, val interface{}) | SetAt sets the given key to the given value at the specified index. |
+| Delete(key string) | Delete remove an item from the map by the supplied key. |
+| DeleteAt(offset int) | DeleteAt delete the key/value pair from the map by the supplied offset. |
+| Keys()| Keys return the keys of the map in the order they were added |
+| Values() | Values returns a slice of the values in the order they were added. |
+| Exists(key string) | Exists test whether the key exists or not. |
+| Index(key string) | Index returns the offset of the key in the ordered map. |
+| Len() | Len returns the length of the map. |
+| String() | String returns the JSON serialized string representation. |
+| MarshalJSON() ([]byte, error) | MarshalJSON implements the `json.Marshaller` interface。 |
+| UnmarshalJSON(b []byte) error| UnmarshalJSON implements the `json.Unmarshaller` interface. |
+
 # Alternatives
 
 * [cevaris/ordered_map](https://github.com/cevaris/ordered_map)
