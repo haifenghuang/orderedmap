@@ -24,6 +24,23 @@ func New() *OrderedMap {
 	return &OrderedMap{keys:[]string{}, values:make(map[string]interface{})}
 }
 
+// Filter filters a OrderedMap if the provided function return true
+func (om *OrderedMap) Filter(f func(key string, value interface{}) bool) *OrderedMap {
+	retOm := New() //retOm: returned OrderedMap
+	if om == nil {
+		return retOm
+	}
+
+	for _, key := range om.keys {
+		val := om.values[key]
+		if f(key, val) { // if the function returns tru, add it to the result.
+			retOm.Set(key, val)
+		}
+	}
+
+	return retOm
+}
+
 // Get returns the value of the map based on its key.
 // It will return nil if it doesn't exist.
 func (om *OrderedMap) Get(key string) (interface{}, bool) {
