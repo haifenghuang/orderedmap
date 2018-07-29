@@ -76,6 +76,20 @@ func main() {
     om2 := orderedmap.New()
     _ = json.Unmarshal([]byte(jsonStream), om2)
     fmt.Printf("om2 = %v\n", om2)
+
+    om2.Sort()
+    fmt.Printf("==============================\n")
+    fmt.Printf("om2 = %v\n", om2)
+
+    om3 := om2.Reverse()
+    fmt.Printf("==============================\n")
+    fmt.Printf("om3 = %v\n", om3)
+
+    om4 := om3.Filter(func(key string,value interface{}) bool {
+        return key == "China" || key == "Male"
+    })
+    fmt.Printf("==============================\n")
+    fmt.Printf("om4 = %v\n", om4)
 }
 ```
 
@@ -95,13 +109,16 @@ func main() {
 | SetAt(index int, key string, val interface{}) | SetAt sets the given key to the given value at the specified index. |
 | Delete(key string) | Delete remove an item from the map by the supplied key. |
 | DeleteAt(offset int) | DeleteAt delete the key/value pair from the map by the supplied offset. |
-| Keys()| Keys return the keys of the map in the order they were added |
+| Keys()| Keys return the keys of the map in the order they were added. |
 | Values() | Values returns a slice of the values in the order they were added. |
 | Exists(key string) | Exists test whether the key exists or not. |
 | Index(key string) | Index returns the offset of the key in the ordered map. |
 | Len() | Len returns the length of the map. |
 | String() | String returns the JSON serialized string representation. |
-| MarshalJSON() ([]byte, error) | MarshalJSON implements the `json.Marshaller` interface。 |
+| Reverse() | Reverse reverse key & value of a map. The value must be a string. |
+| Sort() | Sort the given OrderedMap. |
+| Filter(f func(key string, value interface{}) bool) | Filter an OrderedMap if the provided function return true. |
+| MarshalJSON() ([]byte, error) | MarshalJSON implements the `json.Marshaller` interface. |
 | UnmarshalJSON(b []byte) error| UnmarshalJSON implements the `json.Unmarshaller` interface. |
 
 # Alternatives

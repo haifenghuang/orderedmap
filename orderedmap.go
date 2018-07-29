@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"sort"
 	"strings"
 	"fmt"
 )
@@ -24,7 +25,8 @@ func New() *OrderedMap {
 	return &OrderedMap{keys:[]string{}, values:make(map[string]interface{})}
 }
 
-// Filter filters a OrderedMap if the provided function return true
+// Filter filters an OrderedMap if the provided function return true.
+// Returns a new OrderedMap.
 func (om *OrderedMap) Filter(f func(key string, value interface{}) bool) *OrderedMap {
 	retOm := New() //retOm: returned OrderedMap
 	if om == nil {
@@ -146,6 +148,20 @@ func (om *OrderedMap) Values() []interface{} {
 	return vals
 }
 
+// Reverse reverse key & value of a map.
+// The value must be a string.
+// Returns a new OrderedMap.
+func (om *OrderedMap) Reverse() *OrderedMap {
+	h := New()
+
+	for _, key := range om.keys {
+		val := om.values[key]
+		h.Set(val.(string), key)
+	}
+
+	return h
+}
+
 // Exists test whether the key exists or not.
 func (om *OrderedMap) Exists(key string) (ok bool) {
 	if om.values == nil {
@@ -167,10 +183,22 @@ func (om *OrderedMap) Index(key string) int {
 	return -1
 }
 
+// Blelow three functions implement sort.Interface.
 // Len returns the length of the map.
 func (om *OrderedMap) Len() int {
 	return len(om.keys)
 }
+
+func (om *OrderedMap) Less(i, j int) bool {
+	return om.keys[i] < om.keys[j]
+}
+
+func (om *OrderedMap) Swap(i, j int) {
+	om.keys[i], om.keys[j] = om.keys[j], om.keys[i]
+}
+
+// Sort the given orderedmap.
+func (om *OrderedMap) Sort() { sort.Sort(om) }
 
 // String returns the JSON serialized string representation.
 func (om *OrderedMap) String() string {
@@ -226,7 +254,7 @@ func (om *OrderedMap) UnmarshalJSON(b []byte) error {
 		return fmt.Errorf("expect JSON object open with '{'")
 	}
 
-	om.unmarshalJSON(dec)
+	om.parseObject(dec)
 
 	t, err = dec.Token() //'}'
 	if err != nil {
@@ -239,7 +267,7 @@ func (om *OrderedMap) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-func (om *OrderedMap) unmarshalJSON(dec *json.Decoder) error {
+func (om *OrderedMap) parseObject(dec *json.Decoder) error {
 	for dec.More() { // Loop until it has no more tokens
 		t, err := dec.Token()
 		if err != nil {
@@ -251,7 +279,7 @@ func (om *OrderedMap) unmarshalJSON(dec *json.Decoder) error {
 			return fmt.Errorf("key must be a string, got %T\n", t)
 		}
 
-		val, err := parseObject(dec)
+		val, err := parseValue(dec)
 		if err != nil {
 			return err
 		}
@@ -260,7 +288,7 @@ func (om *OrderedMap) unmarshalJSON(dec *json.Decoder) error {
 	return nil
 }
 
-func parseObject(dec *json.Decoder) (interface{}, error) {
+func parseValue(dec *json.Decoder) (interface{}, error) {
 	t, err := dec.Token()
 	if err != nil {
 		return nil, err
@@ -273,7 +301,7 @@ func parseObject(dec *json.Decoder) (interface{}, error) {
 			return parseArray(dec)
 		case '{': // If it's a map
 			om := New()
-			err := om.unmarshalJSON(dec)
+			err := om.parseObject(dec)
 			if err != nil {
 				return nil, err
 			}
@@ -297,7 +325,7 @@ func parseObject(dec *json.Decoder) (interface{}, error) {
 func parseArray(dec *json.Decoder) ([]interface{}, error) {
 	ret :=[]interface{}{}
 	for {
-		v, err := parseObject(dec)
+		v, err := parseValue(dec)
 		if err == errEOA {
 			return ret, nil
 		}

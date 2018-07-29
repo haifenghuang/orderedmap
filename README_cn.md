@@ -75,6 +75,20 @@ func main() {
     om2 := orderedmap.New()
     _ = json.Unmarshal([]byte(jsonStream), om2)
     fmt.Printf("om2 = %v\n", om2)
+
+    om2.Sort()
+    fmt.Printf("==============================\n")
+    fmt.Printf("om2 = %v\n", om2)
+
+    om3 := om2.Reverse()
+    fmt.Printf("==============================\n")
+    fmt.Printf("om3 = %v\n", om3)
+
+    om4 := om3.Filter(func(key string,value interface{}) bool {
+        return key == "China" || key == "Male"
+    })
+    fmt.Printf("==============================\n")
+    fmt.Printf("om4 = %v\n", om4)
 }
 ```
 
@@ -87,7 +101,7 @@ func main() {
 
 | 函数 | 说明|
 | ---- | --- |
-| New()  | 创建一个新的OrderedMap. |
+| New()  | 创建一个新的OrderedMap。 |
 | Get(key string)  | 根据提供的key，返回相应的value。 |
 | GetAt(pos int)   | 根据提供的pos，返回其对应位置的值。 |
 | Set(key string, value interface{}) | 设置map的key/value。 |
@@ -98,8 +112,11 @@ func main() {
 | Values() | 返回OrderedMap的所有值(value)。 |
 | Exists(key string) | 测试key是否存在于OrderedMap中。 |
 | Index(key string) | 返回key所对应的值(value)处的索引。 |
-| Len() | 返回OrderedMap的长度 |
-| String() | 返回JSON序列化后的字符串. |
+| Len() | 返回OrderedMap的长度。 |
+| String() | 返回JSON序列化后的字符串。 |
+| Reverse() | Reverse reverse key & value of a map. The value must be a string。 |
+| Sort() | Sort the given OrderedMap。 |
+| Filter(f func(key string, value interface{}) bool) | Filter an OrderedMap if the provided function return true。 |
 | MarshalJSON() ([]byte, error) | MarshalJSON 实现了`json.Marshaller`接口。 |
 | UnmarshalJSON(b []byte) error| UnmarshalJSON实现了`json.Unmarshaller`接口。 |
 
