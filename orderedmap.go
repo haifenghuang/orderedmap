@@ -134,7 +134,9 @@ func (om *OrderedMap) DeleteAt(offset int) {
 
 // Keys return the keys of the map in the order they were added.
 func (om *OrderedMap) Keys() []string {
-	return om.keys
+	ret := make([]string, len(om.keys))
+	copy(ret, om.keys)
+	return ret
 }
 
 // Values returns a slice of the values in the order they were added.
