@@ -96,7 +96,7 @@ func main() {
 # Limitation
 
 * OrderedMap only takes strings for the key.
-* OrderedMap is not thread-safe for concurrent use.(It is simple enough to add one using sync.RWMutex)
+* OrderedMap is not thread-saftefor concurrent use.(It is simple enough to add one using sync.RWMutex)
 
 # API
 
